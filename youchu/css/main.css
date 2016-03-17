@@ -1,0 +1,73 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: #ECEDEE;
+}
+a,button,input,textarea{
+    -webkit-tap-highlight-color: rgba(255,0,0,0);
+/*-webkit-user-modify:read-write-plaintext-only;*/
+}
+
+.head{
+    height: 70px;
+    background: #F7F8FA;
+    border-bottom: 1px solid #CACBCC;
+}
+.backBtn{
+
+    text-indent: 1.5em;
+    display: inline-block;
+    background: url(../images/back.png) no-repeat 10px 22px;
+    height: 70px;
+    line-height: 70px;
+    font-size: 1.4em;
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+    /*background: green;*/
+}
+.titleHead{
+    color: #1D3E6F;
+    display: inline-block;
+    height: 70px;
+    line-height: 70px;
+    width: 100%;
+    font-size: 1.6em;
+    font-weight: bold;
+    /*background: red;*/
+}
+.listIcon{
+    display: inline-block;
+    width: 34px;
+    height: 70px;
+    line-height: 70px;
+    font-size: 1.4em;
+    position: absolute;
+    top: 0;
+    right: 14px;
+    cursor: pointer;
+    /*background: green;*/
+}
+.map{
+    background: url(../images/list.png) no-repeat 0 18px;
+    width: 34px;
+    height: 70px;
+    line-height: 70px;
+    display: inline-block;
+}
+.list{
+    background: url(../images/map.png) no-repeat 0 18px;
+    width: 34px;
+    height: 70px;
+    line-height: 70px;
+    display: inline-block;
+}
+.Btn{
+    background: #1E4275;
+    color: #ffffff;
+    font-size: 1.3em;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 30px;
+    height: 60px;
+}

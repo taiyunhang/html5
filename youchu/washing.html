@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <title>邮政储蓄洗车服务</title>
+    <meta name="description" content="邮政储蓄洗车服务">
+    <meta name="keywords" content="邮政储蓄洗车服务">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/layout.css" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/url.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#point").click(function(){
+                window.location.href = "city.html";
+            });
+            $("#record").click(function(){
+                window.location.href = "record.html";
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <header class="row top"><span class="login">洗车服务</span>
+            <div class="back">
+                <a href="javascript:history.go(-1);" style="display:block;"><img src="images/back.png" width="18" style="margin-bottom:2px;"></a>
+            </div>
+        </header>
+        <div class="row mt">
+            <div class="wash">
+                <img src="images/xcfw_banner.jpg" width="100%">
+                <p>点击下方按钮生成二维码，前往洗车网点，出示二维码进行扫码校验，完成洗车</p>
+                <img class="btn_code" data-toggle="modal" data-target="#myModal" src="images/btn_code.png" width="100%">
+                <div class="strcode">订单串码：&nbsp;&nbsp;<span id="strcode">YCFBCQ8537</span></div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="fadetwo1" data-dismiss="modal">
+                <img class="fadetwo2" src="images/dd_code_2.png" width="140">
+            </div>
+        </div>
+        <footer class="row subtn">
+            <div class="submit" id="point">
+                <img src="images/icon_small_loc_w.png" width="23"><span>查看服务网点</span>
+            </div>
+            <div class="submit" id="record" style="margin-top:16px;">
+                <img src="images/icon_small_xfjl.png" width="23"><span>查看消费记录</span>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

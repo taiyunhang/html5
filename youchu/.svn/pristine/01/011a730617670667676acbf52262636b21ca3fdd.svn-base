@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <title>邮政储蓄选择城市</title>
+    <meta name="description" content="邮政储蓄选择城市">
+    <meta name="keywords" content="邮政储蓄选择城市">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/layout.css" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/url.js"></script>
+    <script src="js/fade.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3YOCg7ZoHfhOLxtsTDpMVuPs"></script>
+    <script type="text/javascript">
+    // 浏览器定位
+    if (navigator.geolocation) {
+        // 百度地图API功能
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function(r) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                //$("#latitude").val(r.point.lat);
+                //$("#longitude").val(r.point.lng);
+                sessionStorage.latitude = r.point.lat;
+                sessionStorage.longitude = r.point.lng;
+                $.ajax({
+                    type: "post",
+                    url: url + "allCitys",
+                    data: {
+                        latitude: sessionStorage.latitude,
+                        longitude: sessionStorage.longitude
+                    },
+                    async: false,
+                    success: function(json) {
+                        var res = json;
+                        $("#gps").text(res.currentCity);
+                        $("#gps").attr("cityName", res.currentCity);
+                    }
+                });
+            } else {
+                alert('failed' + this.getStatus());
+            }
+        }, {
+            enableHighAccuracy: true
+        });
+    }
+    $(function() {
+        $.ajax({
+            type: "post",
+            url: url + "allCitys",
+            data: {
+                latitude: sessionStorage.latitude,
+                longitude: sessionStorage.longitude
+            },
+            //async: false,
+            success: function(json) {
+                var res = json;
+                //$("#gps").text(res.currentCity);
+                if (res.resultCode == "SUCCESS") {
+                    var result = res.cityMap,
+                        html = "";
+                    for (pro in result) {
+                        var provice = pro,
+                            citys = result[pro],
+                            li = "";
+                        html += ['<li><a href="#' + provice + '">' + provice + '</a></li>'].join("");
+                        $("#mt").append(['<div class="col-xs-12 col-sm-12 col-md-12 city-title" id="' + provice + '">' + provice + '</div><div class="col-xs-12 col-sm-12 col-md-12 citytel" id="' + provice + '2"><ul></ul></div>'].join(""));
+                        $.each(citys, function(idx, obj) {
+                            var cityname = obj.value;
+                            var citycode = obj.code;
+                            if (idx == citys.length - 1) {
+                                li = ['<li><div>' + cityname + '</div><span style="display:none">' + citycode + '</span></li>'].join("");
+                            } else {
+                                li = ['<li class="line"><div>' + cityname + '</div><span style="display:none">' + citycode + '</span></li>'].join("");
+                            }
+                            $("#" + provice + "2 ul").append(li);
+                        });
+                    };
+                } else if (res.resultCode == "SESSION_TIME_OUT") {
+                    $.MsgBox.Alert("会话已过期");
+                    $("#mb_btn_ok1").click(function() {
+                        window.location.href = "login.html";
+                    });
+                } else {
+                    $.MsgBox.Alert("数据加载失败!");
+                };
+                $("#myScrollspy ul").append(html);
+            }
+        });
+        //定位城市
+        $("#gps").click(function() {
+            var city = $("#gps").attr("cityName");
+            if (city == "" || city == null) {
+                $.MsgBox.Alert("未定位");
+            } else {
+                goMap(city);
+            };
+        });
+        //热门城市
+        $(".ct .tel").click(function() {
+            var city = $(this).text();
+            goMap(city);
+        });
+        //省份、城市
+        $("#mt").on('click', '.citytel ul li', function() {
+            var city = $(this).find("div").html();
+            goMap(city);
+        });
+        //点击最右侧省份使滚动条定位
+        $("body").on('click', '#myScrollspy ul li', function() {
+            var i = $(this).find("a").attr("href")
+            $("html,body").animate({
+                scrollTop: $(i).offset().top - 46
+            }, 0.2);
+        });
+    });
+
+    function goMap(city) {
+        sessionStorage.city = city;
+        window.location.href = "point.html";
+    }
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <header class="row top"><span class="login">选择城市</span>
+            <div class="back">
+                <a href="javascript:history.go(-1);" style="display:block;"><img src="images/back.png" width="18" style="margin-bottom:2px;"></a>
+            </div>
+        </header>
+        <input id="longitude" type="hidden" value="">
+        <input id="latitude" type="hidden" value="">
+        <div class="row mt" id="mt">
+            <div class="col-xs-12 col-sm-12 col-md-12 tel">
+                <span id="gps" cityName="">未定位</span>&nbsp;&nbsp;<span style="color:#B2B2B2;">GPS定位</span>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 city-title">热门城市</div>
+            <div style="padding-right:55px;padding-left:15px">
+                <div class="col-xs-6 col-sm-6 col-md-6 ct">
+                    <div class="tel">上海市</div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 ct">
+                    <div class="tel">北京市</div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 ct">
+                    <div class="tel">广州市</div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 ct">
+                    <div class="tel">深圳市</div>
+                </div>
+            </div>
+        </div>
+        <div class="az bs-js-navbar-scrollspy" id="myScrollspy" style="display:block;">
+            <ul></ul>
+        </div>
+    </div>
+</body>
+
+</html>
